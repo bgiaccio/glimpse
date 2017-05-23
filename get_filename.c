@@ -536,7 +536,7 @@ int file_num;
 				if ((GTextfiles[GNumfiles] = (CHAR *)strdup(beginptr)) == NULL) {
 					*endptr = '\n';
 					fprintf(stderr, "Out of memory at: %s:%d\n", __FILE__, __LINE__);
-					return;
+					return 0;
 				}
 				GFileIndex[GNumfiles] = i*8*sizeof(int) + j;
 				*endptr = '\n';
@@ -578,7 +578,7 @@ int file_num;
 				if ((GTextfiles[GNumfiles] = (CHAR *)strdup(beginptr)) == NULL) {
 					*endptr = '\n';
 					fprintf(stderr, "Out of memory at: %s:%d\n", __FILE__, __LINE__);
-					return;
+					return 0;
 				}
 				GFileIndex[GNumfiles] = filesseen;
 				*endptr = '\n';
@@ -670,7 +670,7 @@ int file_num;
 					if ((GTextfiles[GNumfiles] = (CHAR *)strdup(outputbuffer+prevk)) == NULL) {
 						outputbuffer[k] = '\n';
 						fprintf(stderr, "Out of memory at: %s:%d\n", __FILE__, __LINE__);
-						return;
+						return 0;
 					}
 					outputbuffer[k] = '\n';
 					GFileIndex[GNumfiles] = i*8*sizeof(int)+j;
@@ -749,7 +749,7 @@ int file_num;
 					if ((GTextfiles[GNumfiles] = (CHAR *)strdup(outputbuffer+prevk)) == NULL) {
 						outputbuffer[k] = '\n';
 						fprintf(stderr, "Out of memory at: %s:%d\n", __FILE__, __LINE__);
-						return;
+						return 0;
 					}
 					outputbuffer[k] = '\n';
 					GFileIndex[GNumfiles] = filesseen - 1;	/* not sure here which one but this is never used so ok to fill junk */
@@ -775,6 +775,6 @@ end_files:
 	for (i=0; i<GNumfiles; i++)
 		fprintf(debug, "\t%s\n", GTextfiles[i]);
 #endif	/*BG_DEBUG*/
-	return;
+	return 0;
 }
 

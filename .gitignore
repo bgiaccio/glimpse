@@ -1,0 +1,12 @@
+**/*.o
+**/*.a
+**/Makefile
+bin
+agrep/agrep
+compress/cast
+compress/tbuild
+compress/uncast
+config.log
+config.status
+index/buildcast.c
+main_server.c

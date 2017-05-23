@@ -384,7 +384,7 @@ int	dofilter;
     memset(filter_command, '\0', sizeof(CHAR *) * MAX_FILTER);
     memset(filter_len, '\0', sizeof(int) * MAX_FILTER);
 
-    if (!dofilter) return;
+    if (!dofilter) return 0;
     sprintf(s, "%s/%s", index_dir, FILTER_FILE);
     filterfile = fopen(s, "r");
     if(filterfile == NULL) {
@@ -912,14 +912,14 @@ dump_mini(indexfile)
 
 	if ((indexfp = fopen(indexfile, "r")) == NULL) {
 		fprintf(stderr, "Can't open for reading: %s\n", indexfile);
-		return;
+		return 0;
 	}
 
 	sprintf(s, "%s/%s.tmp", INDEX_DIR, MINI_FILE);
 	if ((minifp = fopen(s, "w")) == NULL) {
 		fprintf(stderr, "Can't open for writing: %s\n", s);
 		fclose(indexfp);
-		return;
+		return 0;
 	}
 
 	fgets(s, 256, indexfp);	/* indexnumbers */
@@ -977,7 +977,7 @@ dump_mini(indexfile)
 end:
 	sprintf(s, "%s/%s.tmp", INDEX_DIR, MINI_FILE);
 	unlink(s);
-	return;
+	return 0;
 }
 #else	/* WORD_SORTED */
 int
@@ -1471,12 +1471,12 @@ insert_filename(name, name_index)
 	char	*temp;
 	int	temp_len;
 
-	if (name == NULL) return;
+	if (name == NULL) return 0;
 	len = strlen(name);
-	if (special_parse_name(name, len, &begin, &end) == -1) return;
+	if (special_parse_name(name, len, &begin, &end) == -1) return 0;
 	if ((begin >= MAX_LINE_LEN) || (len >= MAX_LINE_LEN)) {
 		errno = ENAMETOOLONG;
-		return;
+		return 0;
 	}
 	temp = name;
 	if (begin > 0) {	/* points to first element of the information (like URL) stored after filename */
@@ -1493,7 +1493,7 @@ insert_filename(name, name_index)
 	}
 	pe = &name_hashtable[index];
 	while((*pe != NULL) && (strncmp((*pe)->name, temp, temp_len))) pe = &(*pe)->next;
-	if ((*pe) != NULL) return;
+	if ((*pe) != NULL) return 0;
 	if ((*pe = (name_hashelement *)my_malloc(sizeof(name_hashelement))) == NULL) {
 		fprintf(stderr, "malloc failure in insert_filename %s:%d\n", __FILE__, __LINE__);
 		exit(2);
@@ -1522,16 +1522,16 @@ change_filename(name, len, index, newname)
 	char	temp[MAX_LINE_LEN];
 	int	temp_len;
 
-	if (special_get_name(name, len, temp) == -1) return;
+	if (special_get_name(name, len, temp) == -1) return 0;
 	temp_len = strlen(temp);
 	pe = &name_hashtable[index];
 	while((*pe != NULL) && (strncmp((*pe)->name, temp, temp_len))) pe = &(*pe)->next;
-	if ((*pe) == NULL) return;
+	if ((*pe) == NULL) return 0;
 #if	0
 	my_free((*pe)->name);
 #endif
 	(*pe)->name = newname;
-	return;
+	return 0;
 }
 
 delete_filename(name, name_index)
@@ -1545,12 +1545,12 @@ delete_filename(name, name_index)
 	char	*temp;
 	int	temp_len;
 
-	if (name == NULL) return;
+	if (name == NULL) return 0;
 	len = strlen(name);
-	if (special_parse_name(name, len, &begin, &end) == -1) return;
+	if (special_parse_name(name, len, &begin, &end) == -1) return 0;
 	if ((begin >= MAX_LINE_LEN) || (len >= MAX_LINE_LEN)) {
 		errno = ENAMETOOLONG;
-		return;
+		return 0;
 	}
 	temp = name;
 	if (begin > 0) {	/* points to first element of the information (like URL) stored after filename */
@@ -1567,14 +1567,14 @@ delete_filename(name, name_index)
 	}
 	pe = &name_hashtable[index];
 	while((*pe != NULL) && (strncmp((*pe)->name, temp, temp_len))) pe = &(*pe)->next;
-	if ((*pe) == NULL) return;
+	if ((*pe) == NULL) return 0;
 	t = *pe;
 	*pe = (*pe)->next;
 #if	0
 	my_free(t->name);
 #endif
 	my_free(t, sizeof(name_hashelement));
-	return;
+	return 0;
 }
 
 init_filename_hashtable()

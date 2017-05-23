@@ -53,6 +53,7 @@ free_list(p1)
 }
 
 /* Unions offset lists list2 with list1 sorted in increasing order (deletes elements from list2) => changes both list1 and list2: f += #elems added */
+void
 sorted_union(list1, list2, f, pf, cf)
 	struct offsets **list1, **list2;
 	int	*f, pf, cf;
@@ -115,6 +116,7 @@ sorted_union(list1, list2, f, pf, cf)
 }
 
 /* Intersects offset lists list2 with list1 sorted in increasing order (deletes elements from list2) => changes both list1 and list2 */
+void
 sorted_intersection(filenum, list1, list2, f)
 	struct offsets **list1, **list2;
 	int	*f;

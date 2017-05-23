@@ -25,7 +25,7 @@ char	*progname;
 int
 main(argc, argv)
 	int	argc;
-	unsigned char	*argv[];
+	char	**argv;
 {
 	char	comp_dir[MAX_LINE_LEN];
 	int	threshold, specialwords;

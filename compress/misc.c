@@ -291,7 +291,7 @@ int	flags;
 uninitialize_common()
 {
 	initialize_common_done = 0;
-	return;
+	return 1;
 }
 
 /*

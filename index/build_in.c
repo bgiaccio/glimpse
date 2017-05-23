@@ -125,6 +125,7 @@ extern struct  indices *ip;
 extern int HashTableSize;
 struct token **hash_table; /*[MAX_64K_HASH];*/
 
+void
 build_index()
 {
 	int	i;
@@ -599,6 +600,7 @@ next_token:
 #endif
 }
 
+void
 traverse1()
 {
     FILE *i1, *i2, *i3;
@@ -815,7 +817,7 @@ try_again_1:
     buffer_begin = buffer = (unsigned char *) my_malloc(sizeof(char)* BLOCK_SIZE + 10);	/* always read in units of BLOCK_SIZE or less */
     if(buffer == NULL) {
 	fprintf(stderr, "not enough memory in build_hash\n");
-	if (tried_once) return;
+	if (tried_once) return 0;
 	traverse1();
 	init_hash_table();
 	tried_once = 1;
@@ -1018,7 +1020,7 @@ try_again_1:
 	init_hash_table();
 	hash_icount = icount;
 	my_free(buffer_begin, BLOCK_SIZE + 10);
-	return;
+	return 0;
     }
 
     for(pn=1; pn < part_num; pn++)	/* partition # 0 is not accessed */
@@ -1235,7 +1237,7 @@ init_hash_table()
     int i;
 
     for(i=0; i<HashTableSize; i++) hash_table[i] = (struct token *)NULL;
-    return;
+    return 0;
 }
 
 
@@ -1892,13 +1894,13 @@ fprintf(stderr,"Realloc #4, new size is %d\n",merge_index_buf);
 	    memset(dest_index_buf, '\0', dest_end_pt+2);
         }
     }
-    return;
+    return 0;
 }
 
 remove_filename(fileindex, new_partition)
 	int	fileindex, new_partition;
 {
-	if ((fileindex < 0) || (fileindex >= MaxNum24bPartition)) return;
+	if ((fileindex < 0) || (fileindex >= MaxNum24bPartition)) return 0;
 #if	BG_DEBUG
 	fprintf(LOGFILE, "removing %s from index\n", LIST_GET(name_list, fileindex));
 	memory_usage -= (strlen(LIST_GET(name_list, fileindex)) + 2);
